@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block contenido_cuerpo %}
+<div class="crear-contenedor">
+
+    <h1 class="crear-titulo">Crear artículo</h1>
+
+    <form method="POST" enctype="multipart/form-data" class="crear-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <div class="botones-form">
+            <button type="submit" class="btn-crear1">Crear</button>
+            <a href="javascript:history.back()" class="btn-cancelar">Cancelar</a>
+        </div>
+    </form>
+
+</div>
+{% endblock contenido_cuerpo %}
+

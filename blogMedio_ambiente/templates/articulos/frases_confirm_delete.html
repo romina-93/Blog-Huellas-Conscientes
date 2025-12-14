@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block contenido_cuerpo %}
+<div class="contenedor-borrado-frase">
+
+    <h2>¿Eliminar frase?</h2>
+
+    <p><strong>{{ frase.texto }}</strong></p>
+    <p>Autor: {{ frase.autor }}</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Sí, borrar</button>
+        <a href="{% url 'articulos:path_frases' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+
+</div>
+
+{% endblock contenido_cuerpo %}

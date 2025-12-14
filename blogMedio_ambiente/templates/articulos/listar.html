@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block contenido_cuerpo %}
+
+<h1 class="titulo-listado">
+    Artículos
+    {% if user.is_staff %}
+        <a class="btn-crear" href="{% url 'articulos:path_crear_articulo' %}">+ Crear artículo</a>
+    {% endif %}
+</h1>
+
+<!-- FILTRO POR CATEGORÍA -->
+<div class="filtros-listado">
+    {% for c in categoria %}
+        <a href="{% url 'articulos:path_filtro_categoria' c.pk %}">{{ c.nombre }}</a>
+    {% endfor %}
+</div>
+
+<!-- ORDENAMIENTO -->
+<div class="orden-listado">
+    <strong>Ordenar:</strong>
+    <a href="{% url 'articulos:path_listar_articulo' %}?orden=dsc">Más recientes</a> |
+    <a href="{% url 'articulos:path_listar_articulo' %}?orden=asc">Más antiguos</a>
+</div>
+
+<!-- LISTA DE ARTÍCULOS -->
+<div class="lista-articulos">
+    {% for a in articulos %}
+        <div class="articulo-card">
+            <img src="{{ a.imagen.url }}" alt="{{ a.titulo }}">
+
+            <h2>{{ a.titulo }}</h2>
+
+            <p class="resumen">
+                {{ a.contenido|truncatewords:25 }}
+            </p>
+
+            <p class="meta">
+                <strong>Categoría:</strong> {{ a.categoria }}</p>
+            
+            <a class="btn-leer" href="{% url 'articulos:path_detalle_articulo' a.pk %}">
+                Leer más →
+            </a>
+
+            {% if user.is_staff %}
+                <div class="admin-buttons">
+                    <a class="btn-edit" href="{% url 'articulos:path_modificar_articulo' a.pk %}">Editar</a>
+                    <a class="btn-delete" href="{% url 'articulos:path_eliminar_articulo' a.pk %}">Eliminar</a>
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock contenido_cuerpo %}

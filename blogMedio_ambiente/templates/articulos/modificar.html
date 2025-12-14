@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block contenido_cuerpo %}
+
+<div class="contenedor-formulario">
+    <h1 class="titulo-seccion">✏️ Modificar artículo: {{ articulo.titulo }}</h1>
+
+    <form method="POST" enctype="multipart/form-data" class="formulario">{% csrf_token %}
+        
+        <div class="campos">
+            {{ form.as_p }}
+        </div>
+
+        <div class="contenedor-botones">
+            <button type="submit" class="boton-accion">Guardar cambios</button>
+            <a href="javascript:history.back()" class="boton-cancelar">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+
+{% endblock contenido_cuerpo %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block contenido_cuerpo %}
+<h1 class="titulo-categorias">Categorías</h1>
+
+<div class="lista-categorias">
+    {% for c in categorias %}
+        <div class="categoria-card">
+            <a href="{% url 'articulos:path_filtro_categorias' c.pk %}">
+                <img src="{{ c.imagen.url }}" alt="{{ c.nombre }}">
+            </a>
+            <h2>{{ c.nombre }}</h2>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock contenido_cuerpo %}

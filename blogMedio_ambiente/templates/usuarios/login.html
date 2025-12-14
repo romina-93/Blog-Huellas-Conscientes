@@ -1,0 +1,112 @@
+
+{% extends 'base.html' %}
+
+{% block contenido_cuerpo %}
+
+
+<div class="contenedor-login">
+    
+    <h2>Iniciar Sesión</h2>
+
+    {% if form.errors %}
+        <div class="error-login">
+            <p>⚠ Usuario o contraseña incorrectos</p>
+        </div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <input type="text" name="username" placeholder="Usuario" required>
+        
+        <div class="contenedor-password">
+            <input type="password" name="password" id="campo-pass" placeholder="Contraseña" required>
+            <span class="ver-pass" onclick="alternarPassword()">👁</span>
+        </div>
+
+        <button type="submit" class="btn-login">Ingresar</button>
+    </form>
+
+    <!-- enlace para abrir modal -->
+    <p class="texto-crear-cuenta">
+        ¿No tenés cuenta?
+        <a href="#" onclick="abrirRegistro()">Crear una</a>
+    </p>
+</div>
+
+<!-- MODAL DE REGISTRO-->
+
+<div id="modal-registro" class="modal-fondo">
+    <div class="modal-caja">
+        <span class="cerrar-modal" onclick="cerrarRegistro()">&times;</span>
+        <h2>Crear cuenta</h2>
+
+        <form method="post" action="{% url 'usuarios:path_registro' %}" class="formulario-registro-modal">
+            {% csrf_token %}
+
+            <div class="grupo-campo-modal">
+                <label>Nombre de usuario</label>
+                {{ form_registro.username }}
+            </div>
+
+            <div class="grupo-campo-modal">
+                <label>Nombre</label>
+                {{ form_registro.first_name }}
+            </div>
+
+            <div class="grupo-campo-modal">
+                <label>Apellido</label>
+                {{ form_registro.last_name }}
+            </div>
+
+            <div class="grupo-campo-modal">
+                <label>Correo electrónico</label>
+                {{ form_registro.email }}
+            </div>
+
+            <div class="grupo-campo-modal">
+                <label>Contraseña</label>
+                {{ form_registro.password1 }}
+            </div>
+
+            <div class="grupo-campo-modal">
+                <label>Confirmar contraseña</label>
+                {{ form_registro.password2 }}
+            </div>
+
+            <button type="submit" class="btn-registrarse">Registrarme</button>
+        </form>
+    </div>
+</div>
+
+<script>
+function alternarPassword() {
+    const field = document.getElementById("campo-pass");
+    field.type = field.type === "password" ? "text" : "password";
+}
+
+function abrirRegistro() {
+    document.getElementById("modal-registro").style.display = "flex";
+}
+
+function cerrarRegistro() {
+    document.getElementById("modal-registro").style.display = "none";
+}
+
+// Cerrar si clickea fuera del modal
+window.onclick = function(e) {
+    const modal = document.getElementById("modal-registro");
+    if (e.target === modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
+
+{# SI HAY ERRORES DE REGISTRO, ABRIR EL MODAL AUTOMÁTICAMENTE #}
+{% if abrir_modal %}
+<script>
+    abrirRegistro();
+</script>
+{% endif %}
+
+{% endblock contenido_cuerpo %}

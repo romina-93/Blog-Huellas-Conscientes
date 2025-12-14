@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block contenido_cuerpo %}
+
+<h1 class="titulo-filtrado">{{ nombre_categoria }}</h1>
+
+<p class="descripcion-categoria">
+    Artículos relacionados con esta temática
+</p>
+
+<div class="lista_categoria">
+    {% for a in articulos %}
+        <div class="articulo-card">
+            <img src="{{ a.imagen.url }}" alt="{{ a.titulo }}">
+
+            <h3>{{ a.titulo }}</h3>
+
+            <p class="meta">
+                <strong>Categoría: </strong>{{ a.categoria.nombre }}
+            </p>
+
+            <a class="btn-leer" href="{% url 'articulos:path_detalle_articulo' a.pk %}">
+                Leer más →
+            </a>
+
+            {% if user.is_staff %}
+            <div class="admin-buttons">
+                <a class="btn-edit" href="{% url 'articulos:path_modificar_articulo' a.pk %}">Editar</a>
+                <a class="btn-delete" href="{% url 'articulos:path_eliminar_articulo' a.pk %}">Eliminar</a>
+            </div>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No hay artículos en esta categoría.</p>
+    {% endfor %}
+</div>
+
+{% endblock contenido_cuerpo %}
