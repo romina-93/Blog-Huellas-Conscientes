@@ -1,5 +1,6 @@
 import os
 from .base import *
+import dj_database_url
 
 SECRET_KEY = 'django-insecure-8(d7#byqkb251$+)0k0kcwwjmt=x7ztx7fqj_a)if$9@j41mbq'
 
@@ -25,6 +26,14 @@ CSRF_TRUSTED_ORIGINS = [
 CSRF_USE_SESSIONS = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
+        conn_max_age=600,
+        ssl_require=True
+    )
+}
 
 
 
