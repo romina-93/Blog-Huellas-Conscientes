@@ -3,7 +3,7 @@ from django.utils import timezone
 
 class Contacto(models.Model):
     nombre = models.CharField(max_length=100)
-    email = models.EmailField(max_length=254)
+    email = models.CharField(max_length=200)
     asunto = models.CharField(max_length=200)
     mensaje = models.TextField()
     fecha_envio = models.DateTimeField(default=timezone.now)
