@@ -23,7 +23,6 @@ CSRF_TRUSTED_ORIGINS = [
 	"https://blog-huellas-conscientes.onrender.com",
 ]
 
-CSRF_USE_SESSIONS = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
