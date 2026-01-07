@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block contenido_cuerpo %}
+
+	<div class="botones-retorno">
+        <a href="{{ request.META.HTTP_REFERER }}" class="btn-volver">← Volver atrás</a>
+        <a href="{% url 'path_inicio' %}" class="btn-inicio">Volver al inicio</a>
+    </div>
+
+<div class="contenedor-articulo">
+
+    <!-- Imagen principal -->
+    <div class="articulo-imagen">
+        <img src="{{ articulo.imagen.url }}" alt="{{ articulo.titulo }}">
+    </div>
+
+    <!-- Título -->
+    <h1 class="articulo-titulo">{{ articulo.titulo }}</h1>
+
+    <!-- Meta información -->
+    <div class="articulo-meta">
+        <span><strong>Categoría:</strong> {{ articulo.categoria.nombre }}</span>
+        <span><strong>Publicado:</strong> {{ articulo.creado|date:"d/m/Y" }}</span>
+    </div>
+
+    <!-- Contenido -->
+    <div class="articulo-cuerpo">
+        {{ articulo.contenido|linebreaks }}
+    </div>
+
+    <!-- Comentarios -->
+    <div class="contenedor-comentarios">
+        <h2>Comentarios</h2>
+
+        {% if articulo.misComentarios %}
+            {% for c in articulo.misComentarios %}
+                <div class="comentario">
+                    <p class="comentario-texto">{{ c.texto }}</p>
+                    <p class="comentario-meta">
+                        Publicado por <strong>{{ c.usuario }}</strong>
+                    </p>
+
+                    <!-- Botón eliminar -->
+                    {% if c.usuario == user or user.is_staff %}
+                        <a class="boton-eliminar" href="{% url 'comentarios:path_eliminar_comentario' c.pk %}">Eliminar</a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="sin-comentarios">Aún no hay comentarios. ¡Sé el primero en opinar!</p>
+        {% endif %}
+    </div>
+
+    <!-- Formulario -->
+    {% if user.is_authenticated %}
+    <form method="POST" action="{% url 'comentarios:path_comentar' articulo.pk %}" class="form-comentario">
+        {% csrf_token %}
+        <label>Agregar comentario:</label>
+        <textarea name="comentario" rows="5" required></textarea>
+        <button type="submit">Enviar comentario</button>
+    </form>
+    {% endif %}
+
+</div>
+
+	<div class="botones-retorno">
+        <a href="{{ request.META.HTTP_REFERER }}" class="btn-volver">← Volver atrás</a>
+        <a href="{% url 'path_inicio' %}" class="btn-inicio">Volver al inicio</a>
+    </div>
+
+{% endblock contenido_cuerpo %}

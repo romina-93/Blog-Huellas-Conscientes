@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block contenido_cuerpo %}
+<div class="contenedor-borrado-articulo">
+
+    <h2>¿Eliminar articulo?</h2>
+
+	<p><strong>{{ articulo.titulo }}</strong></p>
+
+	<form method="post">
+		{% csrf_token %}
+	    {{ form }}
+        <button type="submit" class="btn btn-danger">Sí, borrar</button>
+	    <a href="{% url 'articulos:path_listar_articulo' %}" class="btn btn-secondary"> Cancelar</a>
+	</form>
+
+</div>
+
+{% endblock contenido_cuerpo %}
+

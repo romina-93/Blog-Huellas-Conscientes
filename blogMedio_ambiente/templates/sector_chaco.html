@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contenido_cuerpo %}
+
+
+<section class="logo-principal">
+    <img src="{% static 'img/impenetrable.png' %}" alt="Logo Huellas Conscientes" class="logo-impenetrable">
+</section>
+
+<section class="sector-chaco">
+    <h2>🌿 El Impenetrable Chaqueño</h2>
+    <p>Descubrí uno de los lugares más importantes de Argentina, hogar de especies únicas y ecosistemas vitales.</p>
+
+    <!-- Curiosidades visibles -->
+    <div class="curiosidades-chaco">
+        <div class="curiosidad">
+            <h3>🌳 Bosque autóctono</h3>
+            <p>El bosque autóctono de El Impenetrable es el corazón del Parque Nacional El Impenetrable, la reserva natural más grande del norte de Argentina, y representa una muestra vital del Gran Chaco Americano, la ecorregión boscosa más extensa de Sudamérica después del Amazonas. Su nombre se debe a su densa vegetación espinosa y la escasez de agua, que históricamente dificultaban el movimiento a través del territorio. </p>
+            <img src="{% static 'img/quebracho.jpg' %}" alt="Quebracho" class="imagen-curiosidad">
+        </div>
+        <div class="curiosidad">
+            <h3>🐆 Fauna única</h3>
+            <p>La fauna del Parque Nacional El Impenetrable incluye especies emblemáticas y en peligro de extinción como el yaguareté, el oso hormiguero gigante, el tapir, el tatú carreta y el aguará guazú. El parque es un refugio vital para la biodiversidad del Chaco Seco. </p>
+            <img src="{% static 'img/yaguarete.jpg' %}" alt="Yaguareté" class="imagen-curiosidad">
+        </div>
+        <div class="curiosidad">
+            <h3>🌱 Suelo fértil</h3>
+            <p>El suelo en la región del Chaco, incluyendo áreas del Parque Nacional El Impenetrable, se considera naturalmente fértil, pero sufre limitaciones significativas debido al clima semiárido y la falta de cobertura vegetal, lo que desafía la retención de agua. La fertilidad varía localmente, siendo mejor cerca de los ríos o donde la cubierta forestal es densa. </p>
+            <img src="{% static 'img/suelo.jpg' %}" alt="Suelo fértil" class="imagen-curiosidad">
+        </div>
+        <div class="curiosidad">
+            <h3>☀️ Clima</h3>
+            <p>El clima en el Parque Nacional El Impenetrable es subtropical cálido con estación seca, caracterizado por condiciones extremas, que incluyen temperaturas abrasadoras en verano y una marcada escasez de lluvias durante gran parte del año. </p>
+			<img src="{% static 'img/calor.jpg' %}" alt="clima extremo" class="imagen-curiosidad">
+        </div>
+		<div class="curiosidad">
+            <h3>🌍 Rol ecológico</h3>
+            <p>Este bosque ayuda a regular el clima regional, conserva el suelo y sirve de refugio a múltiples especies, siendo clave para la biodiversidad chaqueña.</p>
+            <img src="{% static 'img/ecosistema-chaco.jpg' %}" alt="Ecosistema del Chaco" class="imagen-curiosidad">
+        </div>
+    </div>
+
+    <!-- Botón para ver más -->
+    <a href="#mas-chaco" class="boton-detalles">Ver más</a>
+
+    <!-- Curiosidades ocultas -->
+    <div id="mas-chaco" class="detalle-chaco oculto">
+        <div class="curiosidad">
+            <h3>🔥 Amenazas</h3>
+            <p>El impenetrable enfrenta efectivamente graves amenazas, siendo la deforestación y los incendios forestales los riesgos principales, junto con la caza y tráfico de Especies Silvestres.</p>
+			<img src="{% static 'img/deforestacion.jpg' %}" alt="Deforestacion" class="imagen-curiosidad">
+        </div>
+        <div class="curiosidad">
+            <h3>🗿Pueblos originarios</h3>
+            <p>El Impenetrable Chaqueño no es solo una región de biodiversidad única, sino también un territorio ancestral de varios Pueblos Originarios, cuyo vínculo con el monte y su conocimiento tradicional son fundamentales para entender y conservar el lugar. Pueblos Originarios del Impenetrable: Wichí, Qom, Mocoví.</p>
+			<img src="{% static 'img/originarios.jpg' %}" alt="originarios" class="imagen-curiosidad">
+        </div>
+        <div class="curiosidad">
+            <h3>🌿 Flora medicinal</h3>
+            <p>La flora medicinal del Impenetrable Chaqueño constituye un tesoro de conocimientos ancestrales, principalmente resguardado por los Pueblos Originarios como los Wichí y Qom, quienes han utilizado el monte como su principal farmacia por siglos. La supervivencia del monte chaqueño es crítica para la continuidad de estas prácticas medicinales tradicionales. </p>
+			<img src="{% static 'img/medicinal.jpg' %}" alt="medicinal" class="imagen-curiosidad">
+        </div>
+        <div class="curiosidad">
+            <h3>🚶 Ecoturismo responsable</h3>
+            <p>El Parque Nacional El Impenetrable es un destino clave para el ecoturismo responsable, enfocado en la conservación de la ecorregión Chaco Seco y el apoyo a las comunidades locales.</p>
+			<img src="{% static 'img/ecoturismo.jpg' %}" alt="ecoturismo" class="imagen-curiosidad">
+        </div>
+        <div class="curiosidad">
+            <h3>🔬 Investigaciones científicas</h3>
+            <p>El Parque Nacional El Impenetrable y la ecorregión del Chaco Seco en general son un laboratorio natural y un punto focal para la investigación científica en Argentina, debido a su altísima biodiversidad y al crítico estado de conservación que enfrenta. El objetivo central de la mayoría de los estudios es generar conocimiento para implementar estrategias de conservación efectivas y promover un desarrollo sostenible que incluya a las comunidades locales.</p>
+			<img src="{% static 'img/flora.jpg' %}" alt="Investigaciones" class="imagen-curiosidad">
+        </div>
+        <div class="curiosidad">
+            <h3>🌱 Reforestación</h3>
+            <p>La reforestación y la restauración de áreas degradadas son estrategias esenciales para contrarrestar los efectos de la deforestación y los incendios en El Impenetrable. Este trabajo lo impulsan activamente diversas ONGs en colaboración con comunidades locales y la Administración de Parques Nacionales (APN). Este enfoque va más allá de plantar árboles, buscando recuperar la funcionalidad y la biodiversidad del ecosistema chaqueño.</p>
+			<img src="{% static 'img/plantar-arbol.jpg' %}" alt="Reforestacion" class="imagen-curiosidad">
+        </div>
+        <div class="curiosidad">
+            <h3>🏅 Patrimonio natural</h3>
+            <p>El Parque Nacional El Impenetrable es efectivamente un área protegida nacional y un patrimonio natural de Argentina, ubicado en la provincia del Chaco. Fue creado por la Ley Nacional N° 26.996, sancionada en octubre de 2014, sobre tierras que anteriormente conformaban la estancia La Fidelidad.</p>
+            <img src="{% static 'img/calor.jpg' %}" alt="Patrimonio" class="imagen-curiosidad">
+		</div>
+    </div>
+</section>
+
+<!-- Script para mostrar/ocultar curiosidades -->
+ <script>
+document.querySelector('.boton-detalles').addEventListener('click', function(e){
+    e.preventDefault();
+
+    const detalle = document.querySelector('#mas-chaco');
+
+    detalle.classList.toggle('oculto');
+
+    this.textContent = detalle.classList.contains('oculto')
+        ? 'Ver más'
+        : 'Ver menos';
+});
+</script>
+
+{% endblock %}

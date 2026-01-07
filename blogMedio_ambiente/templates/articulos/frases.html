@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block contenido_cuerpo %}
+
+<section class="frases-inspiradoras">
+    <h2>🌟 Frases que inspiran a cuidar el planeta</h2>
+
+    {% if user.is_authenticated %}
+    <p class="bienvenida-usuario">
+        👋 ¡Hola, {{ user.first_name|default:user.username }}! 
+        ¿Querés compartir una frase que inspire a cuidar el planeta? 🌱
+    </p>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Agregar frase ✨</button>
+    </form>
+    {% else %}
+    <p>🔒 Debés <a href="{% url 'usuarios:path_login' %}">iniciar sesión</a> para agregar una frase.</p>
+    {% endif %}
+
+    <div class="contenedor-frases">
+        {% for frase in frases %}
+            <div class="frase">
+                <p>“{{ frase.texto }}”</p>
+                {% if frase.autor %}
+                    <span>— {{ frase.autor }}</span>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p>No hay frases aún. ¡Sé la primera persona en agregar una! 🌱</p>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock contenido_cuerpo %}

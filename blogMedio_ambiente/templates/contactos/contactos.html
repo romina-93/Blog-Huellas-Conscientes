@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block contenido_cuerpo %}
+
+<div class="contenedor-contacto">
+
+    <div class="tarjeta-formulario">
+        <h1 class="titulo-contacto">Formulario de Contacto</h1>
+
+        {% if mensaje_exito %}
+            <p class="mensaje-exito">{{ mensaje_exito }}</p>
+        {% endif %}
+
+        <form method="post" class="formulario">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="boton-enviar">Enviar</button>
+        </form>
+
+        <div class="redes-sociales">
+            <p class="texto-redes">También podés encontrarnos en:</p>
+
+            <div class="iconos-redes">
+                <a href="https://www.facebook.com/" class="icono"><i class="fa-brands fa-facebook"></i></a>
+                <a href="https://www.instagram.com/" class="icono"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://x.com/?lang=es" class="icono"><i class="fa-brands fa-twitter"></i></a>
+                <a href="https://www.whatsapp.com/?lang=es" class="icono"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock contenido_cuerpo %}
+
+
+

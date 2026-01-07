@@ -1,0 +1,571 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contenido_cuerpo %}
+
+{% if inicio_limpio %}
+    {# SOLO MOSTRAR INTRO Y LATERAL, NO MOSTRAR LISTA NI FILTROS ACTIVOS #}
+{% else %}
+    {# MOSTRAR FILTROS Y LISTA DE ARTÍCULOS #}
+{% endif %}
+
+<div class="filtros">
+
+    <!-- Filtro por Categoría -->
+    <div class="filtro-item">
+        <strong>Categorías:</strong>
+        {% for c in categorias %}
+            <a href="?{{ request.GET.urlencode }}&categoria={{ c.pk }}">
+                {{ c.nombre }}
+            </a>
+        {% endfor %}
+    </div>
+
+    <!-- Filtro por Antigüedad -->
+    <div class="filtro-item">
+        <strong>Antigüedad:</strong>
+        <a href="?{{ request.GET.urlencode }}&orden=asc">Más antiguos</a>
+        <a href="?{{ request.GET.urlencode }}&orden=desc">Más recientes</a>
+    </div>
+
+    <!-- Orden alfabético -->
+    <div class="filtro-item">
+        <strong>Orden alfabético:</strong>
+        <a href="?{{ request.GET.urlencode }}&alf=asc">A → Z</a>
+        <a href="?{{ request.GET.urlencode }}&alf=desc">Z → A</a>
+    </div>
+
+    {% if f_categoria or f_orden or f_alf or query %}
+    <div class="filtro-item">
+        <a href="{% url 'path_inicio' %}" class="btn-reset">Quitar filtros</a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Sección de resultados de búsqueda -->
+{% if query %}
+<section class="resultados-busqueda">
+    <h2>🔎 Resultados para "{{ query }}"</h2>
+    
+    {% if resultados %}
+        <div class="lista-articulos">
+            {% for articulo in resultados %}
+                <div class="tarjeta-articulo">
+                    <!-- Imagen opcional -->
+                    {% if articulo.imagen %}
+                        <img src="{{ articulo.imagen.url }}" alt="{{ articulo.titulo }}">
+                    {% endif %}
+                    <div class="contenido-articulo">
+                        <a href="{% url 'articulos:path_detalle_articulo' articulo.pk %}">
+                            <h3>{{ articulo.titulo }}</h3>
+                        </a>
+                        <p>{{ articulo.contenido|truncatewords:25 }}</p>
+                        <div class="etiquetas">
+                            {% for etiqueta in articulo.etiquetas.all %}
+                                <span class="etiqueta">{{ etiqueta.nombre }}</span>
+                            {% endfor %}
+                        </div>
+                        <a class="boton-leer" href="{% url 'articulos:path_detalle_articulo' articulo.pk %}">Leer más →</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No se encontraron artículos.</p>
+    {% endif %}
+</section>
+{% endif %}
+
+<!-- LISTA DE ARTÍCULOS -->
+{% if not inicio_limpio %}
+<div class="grid-articulos">
+    {% for a in articulos %}
+    <article class="tarjeta-articulo">
+
+        <img src="{{ a.imagen.url }}" alt="{{ a.titulo }}">
+
+        <div class="tarjeta-cuerpo">
+            <h2 class="tarjeta-titulo">{{ a.titulo }}</h2>
+
+            <p class="tarjeta-resumen">
+                {{ a.contenido|truncatewords:25 }}
+            </p>
+
+            <p><strong>Categoría:</strong> {{ a.categoria }}</p>
+
+            <a class="btn-leer" href="{% url 'articulos:path_detalle_articulo' a.pk %}">
+               Leer más →
+            </a>
+
+            {% if user.is_staff %}
+                <div class="admin-buttons">
+                    <a class="btn-edit" href="{% url 'articulos:path_modificar_articulo' a.pk %}">Editar</a>
+                    <a class="btn-delete" href="{% url 'articulos:path_eliminar_articulo' a.pk %}">Eliminar</a>
+                </div>
+            {% endif %}
+        </div>
+    </article>
+    {% empty %}
+        <p>No hay artículos para mostrar.</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="inicio">
+    <section class="inicio-intro">
+        <h1>Bienvenidos a <span class="marca">Huellas Conscientes</span></h1>
+        
+        <p>
+            La Tierra nos habla en cada amanecer, en el viento que mueve los árboles, 
+            en el canto de las aves y en la calma de los ríos. Pero también nos habla 
+            a través de los incendios, de las sequías, del plástico en los océanos y 
+            de las especies que ya no están. 
+        </p>
+
+        <p>
+            <strong>Huellas Conscientes</strong> nace como un llamado.  
+            Un llamado a detenernos un momento, observar, reflexionar y actuar.  
+            Porque el planeta no necesita grandes héroes: necesita personas reales, 
+            comprometidas, que den pasos pequeños pero consistentes hacia un mundo 
+            más sostenible.
+        </p>
+
+        <p>
+            Aquí vas a encontrar artículos, guías, reflexiones y noticias dedicadas 
+            exclusivamente al <strong>medio ambiente</strong>.  
+            Hablamos sobre <em>cambio climático, biodiversidad, energías limpias, 
+            reciclaje, conservación, protección de ecosistemas y hábitos sostenibles</em>.
+        </p>
+
+        <p>
+            Creemos que cada acción importa.  
+            Que cada decisión suma.  
+            Que cada una de nuestras huellas puede transformarse en una huella consciente.
+        </p>
+
+        <p>
+            Te invitamos a explorar nuestras 
+            <a class="btn-categoria" href="{% url 'categorias:path_listar_categoria' %}">categorías</a>, 
+            a aprender, a cuestionarte y, sobre todo, a animarte a ser parte del cambio.  
+            Porque el futuro no está escrito: lo construimos con cada elección que hacemos hoy.
+        </p>
+
+        <p><strong>Gracias por estar acá. Gracias por elegir cuidar el planeta.</strong></p>
+    </section>
+
+	<section class="datos-fauna">
+      <h2 class="titulo-fauna">Avistamiento de fauna silvestre</h2>
+
+      <p class="subtitulo-fauna">
+        Información útil para actuar de forma responsable en la provincia del Chaco.
+      </p>
+
+      <ul class="lista-contactos-fauna">
+         <li>🌿 Dirección de Fauna y Áreas Naturales Protegidas del Chaco. <br> Tel. 0362-4421428.</li>
+         <li>🚒 Bomberos <span class="detalle-fauna">(riesgo inmediato)</span></li>
+         <li>
+          📞 <strong>105</strong> — Recursos Naturales del Chaco
+          <span class="detalle-fauna">(avistamientos y situaciones de riesgo con fauna silvestre)</span>
+         </li>
+         <li>📞 Emergencias generales: <strong>911</strong></li>
+       </ul>
+
+       <p class="nota-fauna">
+         ⚠️ No manipules al animal ni intentes capturarlo o trasladarlo.  
+         Mantené distancia y comunicate con las autoridades.
+       </p>
+    </section>
+
+</div>
+
+<div class="contenedor-datos">
+
+    <!-- COLUMNA IZQUIERDA -->
+    <div class="datos-izquierda">
+
+        <!-- TEXTO ARRIBA -->
+        <div class="interes-izq">
+            <h2>Entonces, ¿de qué se trata este sitio?</h2>
+
+            <p>
+                <strong>Huellas Conscientes</strong> es un espacio creado para inspirar y educar sobre 
+                el cuidado del medio ambiente. Aquí encontrarás información útil, recursos prácticos, 
+                guías y consejos que te ayudarán a reducir tu impacto ecológico.
+            </p>
+
+            <p>
+                Promovemos acciones simples que cualquier persona puede aplicar en su día a día para 
+                proteger nuestros ecosistemas y vivir de manera más sostenible.
+            </p>
+        </div>
+
+
+        <!-- CARRUSEL ABAJO -->
+        <h2>📸 Galería de Imágenes</h2>
+
+        <div class="swiper carrusel-datos">
+            <div class="swiper-wrapper">
+
+                <div class="swiper-slide">
+                    <img src="{% static 'img/aguara-guazu.jpg' %}" alt="fauna">
+                </div>
+
+                <div class="swiper-slide">
+                    <img src="{% static 'img/cambio.jpg' %}" alt="cambio climático">
+                </div>
+
+                <div class="swiper-slide">
+                    <img src="{% static 'img/climatico.jpg' %}" alt="clima">
+                </div>
+
+                <div class="swiper-slide">
+                    <img src="{% static 'img/energia.jpg' %}" alt="energía">
+                </div>
+
+				<div class="swiper-slide">
+                    <img src="{% static 'img/yaguarete.jpg' %}" alt="yaguarete">
+                </div>
+
+				<div class="swiper-slide">
+                    <img src="{% static 'img/deforestacion.jpg' %}" alt="deforestacion">
+                </div>
+
+				<div class="swiper-slide">
+                    <img src="{% static 'img/ecosistema-chaco.jpg' %}" alt="ecosistema">
+                </div>
+
+				<div class="swiper-slide">
+                    <img src="{% static 'img/ecoturismo.jpg' %}" alt="ecoturismo">
+                </div>
+
+				<div class="swiper-slide">
+                    <img src="{% static 'img/plantar-arbol.jpg' %}" alt="plantar-arbol">
+                </div>
+
+				<div class="swiper-slide">
+                    <img src="{% static 'img/foto-muitú.jpg' %}" alt="muitú">
+                </div>
+
+				<div class="swiper-slide">
+                    <img src="{% static 'img/hornero.jpg' %}" alt="hornero">
+                </div>
+				
+				<div class="swiper-slide">
+                    <img src="{% static 'img/monos.jpg' %}" alt="monos">
+                </div>
+				
+				<div class="swiper-slide">
+                    <img src="{% static 'img/sustentable.png' %}" alt="sustentable">
+                </div>
+				
+				<div class="swiper-slide">
+                    <img src="{% static 'img/rio.jpg' %}" alt="rio">
+                </div>
+
+            </div>
+
+            <div class="swiper-pagination"></div>
+        </div>
+
+    </div> <!-- FIN COLUMNA IZQUIERDA -->
+
+
+<!-- COLUMNA DERECHA -->
+    <div class="datos-derecha" id="datosPlaneta">
+        <h2>🌍 Curiosidades que quizás no sabías</h2>
+        
+        <ul class="lista-datos-utiles" aria-live="polite">
+
+            <li class="curiosidad"> <span class="emoji">🌳</span><div><strong>Un solo árbol</strong> puede absorber hasta 22 kg de CO₂ por año — Fuente: FAO.</div></li>
+            <li class="curiosidad"> <span class="emoji">🌊</span><div><strong>El 50-80% del oxígeno</strong> mundial proviene del fitoplancton oceánico — Fuente: NOAA.</div></li>
+            <li class="curiosidad"> <span class="emoji">🐝</span><div><strong>Las abejas</strong> polinizan el 75% de los cultivos del mundo — Fuente: ONU Medio Ambiente.</div></li>
+            <li class="curiosidad"> <span class="emoji">🔥</span><div><strong>Se pierden 10 millones</strong> de hectáreas de bosques por año — Fuente: FAO.</div></li>
+            <li class="curiosidad"> <span class="emoji">♻️</span><div><strong>Reciclar una lata</strong> de aluminio ahorra 95% de energía — Fuente: EPA.</div></li>
+            <li class="curiosidad"> <span class="emoji">🌞</span><div><strong>Desde 2020</strong>, la energía solar es la más barata del mundo — Fuente: IEA.</div></li>
+            <li class="curiosidad"> <span class="emoji">🗑️</span><div><strong>Una botella plástica</strong> tarda hasta 450 años en degradarse — Fuente: National Geographic.</div></li>
+
+        </ul>
+
+
+        <!-- Curiosidades adicionales (ocultas por defecto) -->
+        <div class="curiosidades-adicionales" id="masCuriosidades" aria-hidden="true">
+          <ul class="lista-datos-utiles" style="margin-top:0;">
+            <li class="curiosidad"> <span class="emoji">❄️</span><div><strong>La Antártida</strong> es el desierto más grande del mundo por la baja precipitación anual. - Fuente: NASA – Earth Observatory</div></li>
+            <li class="curiosidad"> <span class="emoji">🌋</span><div><strong>El Monte Everest</strong> crece unos milímetros cada año por la colisión tectónica entre India y Eurasia. - Fuente: National Geographic Society</div></li>
+            <li class="curiosidad"> <span class="emoji">🐢</span><div><strong>Las tortugas marinas</strong> pueden migrar miles de kilómetros entre zonas de anidación y alimentación. - Fuente: NOAA (National Oceanic and Atmospheric Administration) & WWF</div></li>
+            <li class="curiosidad"> <span class="emoji">🐍</span><div><strong>La selva amazónica</strong> alberga alrededor del 10% de todas las especies conocidas. - Fuente: WWF & UNESCO</div></li>
+            <li class="curiosidad"> <span class="emoji">🌡️</span><div><strong>El punto más profundo</strong> conocido del océano (Challenger Deep) está sobre los ~11.000 metros bajo el nivel del mar. - Fuente: NOAA – Ocean Exploration</div></li>
+            <li class="curiosidad"> <span class="emoji">🧊</span><div><strong>El hielo antártico</strong> conserva burbujas de aire de cientos de miles de años, usadas para estudiar antiguos climas.- Fuente: British Antarctic Survey & NOAA Paleoclimatology</div></li>
+            <li class="curiosidad"> <span class="emoji">🔊</span><div><strong>El sonido viaja</strong> más rápido en el agua que en el aire — por eso los animales marinos usan señales acústicas. - Fuente: NOAA – Ocean Acoustics</div></li>
+          </ul>
+        </div>
+
+        <button class="btn-ver-mas" id="btnVerMas" aria-expanded="false" aria-controls="masCuriosidades">
+          👉 Ver más datos del planeta
+        </button>
+
+</div>
+
+</div> <!-- FIN contenedor-datos -->
+
+
+<!-- ARTÍCULOS RECIENTES -->
+
+    <section class="articulos-principales">
+        <h2>📰 Artículos recientes</h2>
+        <div class="grid-tarjetas-principal">
+            {% for c in articulos_recientes %}
+            <article class="tarjeta-articulo-principal">
+                <img src="{{ c.imagen.url }}" alt="{{ c.titulo }}">
+                <div class="tarjeta-cuerpo">
+                    <h3>{{ c.titulo }}</h3>
+                    <p>{{ c.contenido|truncatewords:25 }}</p>
+                    <p><strong>Categoría:</strong> {{ c.categoria }}</p>
+                    <a class="btn-leer" href="{% url 'articulos:path_detalle_articulo' c.pk %}">Leer más →</a>
+                </div>
+            </article>
+            {% empty %}
+            <p>No hay artículos recientes disponibles.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- ARTÍCULOS DESTACADOS -->
+
+    <section class="articulos-principales">
+        <h2>⭐ Artículos destacados</h2>
+        <div class="grid-tarjetas-principal">
+            {% for r in articulos_relevantes %}
+            <article class="tarjeta-articulo-principal">
+                <img src="{{ r.imagen.url }}" alt="{{ r.titulo }}">
+                <div class="tarjeta-cuerpo">
+                    <h3>{{ r.titulo }}</h3>
+                    <p>{{ r.contenido|truncatewords:25 }}</p>
+                    <p><strong>Categoría:</strong> {{ r.categoria }}</p>
+                    <a class="btn-leer" href="{% url 'articulos:path_detalle_articulo' r.pk %}">Leer más →</a>
+               </div>
+            </article>
+            {% empty %}
+            <p>No hay artículos destacados disponibles.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <div class="tips-eco">
+    <h2>🌱 Tips ecológicos rápidos</h2>
+
+    <!-- 6 tips visibles -->
+    <div class="tarjetas-tips">
+    
+        <div class="tip">
+            <span class="icon">⚡</span>
+            <h3>Apagá luces innecesarias</h3>
+            <p>Incluso unos minutos hacen la diferencia. <strong>Dato:</strong> Reducir el consumo eléctrico ayuda al planeta y a tu bolsillo.</p>
+        </div>
+
+        <div class="tip">
+            <span class="icon">🚲</span>
+            <h3>Promové la movilidad activa</h3>
+            <p>Usá bicicleta o caminá para distancias cortas. <strong>Tip:</strong> Combate la contaminación y mejora tu salud.</p>
+        </div>
+
+        <div class="tip">
+            <span class="icon">♻️</span>
+            <h3>Reciclá correctamente</h3>
+            <p>Separá papel, plástico y vidrio. <strong>Dato:</strong> Reciclar 1 tonelada de papel salva 17 árboles.</p>
+        </div>
+
+        <div class="tip">
+            <span class="icon">💧</span>
+            <h3>Ahorrá agua</h3>
+            <p>Cerrá la canilla mientras te cepillás los dientes. <strong>Tip eco:</strong> Una familia puede ahorrar hasta 50 litros al día.</p>
+        </div>
+
+        <div class="tip">
+            <span class="icon">🔋</span>
+            <h3>Reducí energía</h3>
+            <p>Usá lámparas LED y apagá dispositivos en stand-by. <strong>Dato:</strong> Podés ahorrar hasta un 20% en tu factura eléctrica.</p>
+        </div>
+
+        <div class="tip">
+            <span class="icon">🌿</span>
+            <h3>Elegí productos eco</h3>
+            <p>Preferí biodegradables y empaques reciclables. <strong>Tip:</strong> Cada elección cuenta para reducir residuos.</p>
+        </div>
+
+        <div class="tip">
+            <span class="icon">🛍️</span>
+            <h3>Evitá plásticos de un solo uso</h3>
+            <p>Usá bolsas reutilizables y botellas de acero o vidrio. <strong>Tip:</strong> Reducir plásticos protege la fauna marina.</p>
+        </div>
+
+        <div class="tip">
+            <span class="icon">🚶‍♂️</span>
+            <h3>Movete de forma sostenible</h3>
+            <p>Optá por caminar o bicicleta cuando puedas. <strong>Dato:</strong> Reducir el uso del auto baja la contaminación.</p>
+        </div>
+    </div>
+
+    <!-- 6 tips adicionales (SEPARADOS) -->
+    <div class="tarjetas-tips tips-adicionales">
+        <div class="tip">
+            <span class="icon">🍃</span>
+            <h3>Usá productos reutilizables</h3>
+            <p>Reemplazá servilletas y papel de cocina por paños reutilizables.</p>
+        </div>
+
+        <div class="tip">
+            <span class="icon">🌳</span>
+            <h3>Plantá árboles y plantas</h3>
+            <p>Mejora el aire y aporta biodiversidad a tu zona.</p>
+        </div>
+
+        <div class="tip">
+            <span class="icon">🚰</span>
+            <h3>Reutilizá el agua</h3>
+            <p>Recolectá agua de lluvia para riego y limpieza.</p>
+        </div>
+
+        <div class="tip">
+            <span class="icon">🌞</span>
+            <h3>Aprovechá la luz natural</h3>
+            <p>Mantené cortinas abiertas y reducís el uso de luz artificial.</p>
+        </div>
+
+        <div class="tip">
+            <span class="icon">🧼</span>
+            <h3>Usá detergentes ecológicos</h3>
+            <p>Evitan contaminar ríos y son mejores para tu salud.</p>
+        </div>
+
+        <div class="tip">
+            <span class="icon">🌍</span>
+            <h3>Sumate a limpiezas comunitarias</h3>
+            <p>Ayudás al ambiente y fomentás conciencia en tu barrio.</p>
+        </div>
+    </div>
+
+    <button class="ver-mas">✨ Ver más tips</button>
+</div>
+
+
+<div class="acciones-hoy">
+    <h2>💚 Gestos diarios que hacen la diferencia</h2>
+    <div class="chips-acciones">
+        <div class="chip">🌍 Plantar un árbol</div>
+        <div class="chip">🚯 No tirar basura</div>
+        <div class="chip">🛍️ Llevar bolsa reutilizable</div>
+        <div class="chip">🚲 Usar bicicleta</div>
+        <div class="chip">🥤 Reducir plásticos</div>
+        <div class="chip">💡 Usar luz natural</div>
+        <div class="chip">🍃Compostaje de restos</div>
+        <div class="chip">🛁 Tomar duchas más cortas</div>
+        <div class="chip">🧴 Elegir productos sin químicos agresivos</div>
+        <div class="chip">⚡ Apagar luces y aparatos que no uses</div>
+        <div class="chip">🚰 Recoger agua de lluvia para plantas</div>
+    </div>
+</div>
+
+<section class="frases-inspiradoras">
+    <h2>🌟 Frases que inspiran a cuidar el planeta</h2>
+
+        <!-- BOTÓN PARA AGREGAR FRASE (SI ESTÁ LOGUEADO) -->
+        {% if user.is_authenticated %}
+        <div class="btn-agregar-frase-contenedor">
+            <a href="{% url 'apps.articulos:path_frases' %}" class="btn-agregar-frase">
+                ➕ Agregar frase
+            </a>
+        </div>
+        {% endif %}
+
+    <div class="contenedor-frases">
+
+        <div class="frase">
+            <span class="icono">🌱</span>
+            <p>“La Tierra no es una herencia de nuestros padres, sino un préstamo de nuestros hijos.”</p>
+            <span class="autor">— Proverbio Indígena</span>
+        </div>
+
+        <div class="frase">
+            <span class="icono">🌎</span>
+            <p>“La tierra no nos pertenece: nosotros pertenecemos a la tierra.”</p>
+            <span class="autor">— Chief Seattle</span>
+        </div>
+
+        <div class="frase">
+            <span class="icono">🌳</span>
+            <p>“Si supiera que el mundo se acaba mañana, yo hoy todavía plantaría un árbol.”</p>
+            <span class="autor">— Martin Luther King</span>
+        </div>
+
+        <div class="frase">
+            <span class="icono">📖</span>
+            <p>“La naturaleza es el único libro que ofrece un contenido valioso en todas sus páginas.”</p>
+            <span class="autor">— Goethe</span>
+        </div>
+
+        <!-- FRASES NUEVAS -->
+{% for frase in frases %}
+    <div class="frase">
+        <p>“{{ frase.texto }}”</p>
+        {% if frase.autor %}
+            <span class="autor">— {{ frase.autor }}</span>
+        {% endif %}
+
+        {% if request.user == frase.usuario or request.user.is_superuser %}
+            <a href="{% url 'apps.articulos:path_borrar_frase' frase.id %}"
+               class="btn-borrar-frase">>
+               🗑️ Borrar
+            </a>
+        {% endif %}
+    </div>
+{% endfor %}
+
+    </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const botonVerMas = document.querySelector(".ver-mas");
+    const tipsAdicionales = document.querySelector(".tips-adicionales");
+
+    botonVerMas.addEventListener("click", function() {
+        if (tipsAdicionales.style.display === "none") {
+            tipsAdicionales.style.display = "grid";
+            botonVerMas.textContent = "🔽 Ver menos tips";
+        } else {
+            tipsAdicionales.style.display = "none";
+            botonVerMas.textContent = "✨ Ver más tips";
+        }
+    });
+});
+
+</script>
+
+<script>
+// JavaScript minimalista para alternar la vista
+(function(){
+const contenedor = document.getElementById('datosPlaneta');
+const btn = document.getElementById('btnVerMas');
+const adicionales = document.getElementById('masCuriosidades');
+
+
+btn.addEventListener('click', function(e){
+const abierto = contenedor.classList.toggle('abierto');
+adicionales.setAttribute('aria-hidden', String(!abierto));
+btn.setAttribute('aria-expanded', String(abierto));
+btn.innerText = abierto ? '⬅️ Ver menos datos del planeta' : '👉 Ver más datos del planeta';
+
+
+// scroll suave hasta el botón al colapsar/expandir (mejora la UX)
+if(abierto){ btn.scrollIntoView({behavior: 'smooth', block: 'nearest'}); }
+});
+
+
+// Mejora: permite abrir con la tecla Enter/Space cuando tiene foco (ya ocurre por ser button)
+})();
+</script>
+
+
+{% endblock contenido_cuerpo %}

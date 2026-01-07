@@ -1,0 +1,210 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Blog de Medio Ambiente "Huellas Conscientes"</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+	
+	
+</head>
+<body>
+	<!-- Barra de progreso de lectura -->
+<div id="barra-progreso"></div>
+
+<!-- HEADER -->
+<header class="header-superior">
+<div class="header-inner">
+
+    <div class="header-left">
+        <div class="logo">
+            <a href="{% url 'path_inicio' %}">
+                <img src="{% static 'img/logo.png' %}" alt="logo img">
+                <span class="nombre-blog">Huellas Conscientes</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="header-center">
+        <nav class="nav-inferior">
+            <ul class="nav-menu">
+                <li><a href="{% url 'path_inicio' %}">Inicio</a></li>
+                <li><a href="{% url 'articulos:path_listar_articulo' %}">Artículos</a></li>
+                <li><a href="{% url 'categorias:path_listar_categoria' %}">Categorías</a></li>
+                <li><a href="{% url 'contactos:path_contacto' %}">Contactos</a></li>
+                <li><a href="{% url 'nosotros:path_nosotros' %}">Sobre nosotros</a></li>
+				<li><a href="{% url 'sector_chaco' %}">Sector Chaco</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="header-right">
+        <div class="area-derecha">
+
+            <form method="get" action="{% url 'path_inicio' %}" class="buscador-global">
+                <input type="text" name="q" placeholder="Buscar..." value="{{ query|default:'' }}">
+                <button type="submit">🔍</button>
+            </form>
+
+            <div class="zona-usuario">
+                {% if user.is_authenticated %}
+                    <span class="usuario-saludo">👤 Bienvenido {{ user.username }}</span>
+                    <form method="POST" action="{% url 'usuarios:path_logout' %}" class="form-cerrar-sesion">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-cerrar-sesion">Cerrar sesión</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'usuarios:path_login' %}" class="enlace-usuario">Acceso</a>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</header>
+
+
+<!--HERO — FONDO DEL BLOG-->
+<section class="fondo-header">
+    <div class="hero-contenido">
+        <h1 class="hero-titulo">Huellas Conscientes</h1>
+        <p class="hero-sub">Un espacio para cuidar el planeta 🌿</p>
+    </div>
+</section>
+
+
+<!-- MAIN -->
+<main class="cuerpo">
+    {% block contenido_cuerpo %}
+    <!-- Aquí va el contenido de cada página -->
+    {% endblock contenido_cuerpo %}
+</main>
+
+<!-- SWIPER JS + INICIALIZACIÓN DEL CARRUSEL -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+    var swiper = new Swiper('.carrusel-datos', {
+        loop: true,
+        autoplay: {
+            delay: 3000,
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        speed: 600,
+    });
+</script>
+
+<!-- SWIPER JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+    var swiper = new Swiper('.carrusel-datos', {
+        loop: true,
+        autoplay: {
+            delay: 3000,
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        speed: 600,
+    });
+
+    // Cambiar color de header al hacer scroll
+    window.addEventListener('scroll', function() {
+        const header = document.querySelector('.header-superior');
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    });
+
+</script>
+
+<footer class="pie-de-pagina">
+
+    <div class="contenedor-footer">
+
+        <!-- COLUMNA 1: Información -->
+        <div class="columna-footer">
+            <h3 class="titulo-footer">Huellas Conscientes</h3>
+
+            <p>
+                Sitio dedicado a inspirar, educar y promover acciones sostenibles para proteger el planeta.
+            </p>
+
+            <p><strong>Email:</strong> info@huellas.com</p>
+
+        </div>
+
+        <!-- COLUMNA 3: Enlaces rápidos -->
+        <div class="columna-footer">
+            <h3 class="titulo-footer">Enlaces rápidos</h3>
+
+            <ul class="lista-enlaces">
+                <li><a href="{% url 'apps.nosotros:path_nosotros' %}">Nosotros</a></li>
+                <li><a href="{% url 'apps.articulos:path_listar_articulo' %}">Articulos</a></li>
+				<li><a href="{% url 'sector_chaco' %}">Sector Chaco</a></li>
+                <li><a href="{% url 'apps.contactos:path_contacto' %}">Contactos</a></li>                
+				<li><a href="https://www.greenpeace.org/argentina/">Fundacion Greenpeace</a></li>
+				<li><a href="https://concienciaambiental.org.ar/">Fundación Conciencia Ambiental</a></li>
+				
+            </ul>
+        </div>
+
+        <!-- COLUMNA 4: Redes sociales -->
+		<div class="redes-sociales">
+			<p class="titulo-footer">Seguinos en:</p>
+
+			<div class="iconos-redes"></div>
+               <a href="https://www.facebook.com/" class="icono-red" aria-label="Facebook">
+                   <i class="fa-brands fa-facebook-f"></i>
+                </a>
+
+                <a href="https://www.instagram.com/" class="icono-red" aria-label="Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <a href="https://x.com/?lang=es" class="icono-red" aria-label="X">
+                    <i class="fa-brands fa-twitter"></i>
+                </a>
+
+                <a href="https://www.youtube.com/" class="icono-red" aria-label="YouTube">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+			</div>
+        </div>
+
+    </div>
+
+    <!-- DERECHOS -->
+    <div class="copy-footer">
+        © 2025 Huellas Conscientes | Términos de uso | Política de privacidad
+    </div>
+
+</footer>
+
+<script>
+window.addEventListener("scroll", () => {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+
+    const progreso = (scrollTop / scrollHeight) * 100;
+
+    document.getElementById("barra-progreso").style.width = progreso + "%";
+});
+</script>
+
+</body>
+</html>
