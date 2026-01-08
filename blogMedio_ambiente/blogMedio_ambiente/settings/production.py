@@ -7,8 +7,9 @@ SECRET_KEY = 'django-insecure-8(d7#byqkb251$+)0k0kcwwjmt=x7ztx7fqj_a)if$9@j41mbq
 DEBUG = False
 
 ALLOWED_HOSTS = [
-	"blog-huellas-conscientes.onrender.com",
+    "blog-huellas-conscientes-88au.onrender.com",
 ]
+
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = True
@@ -20,7 +21,7 @@ SESSION_COOKIE_SAMESITE = None
 
 
 CSRF_TRUSTED_ORIGINS = [
-	"https://blog-huellas-conscientes.onrender.com",
+    "https://blog-huellas-conscientes-88au.onrender.com",
 ]
 
 
