@@ -11,7 +11,6 @@ LOGIN_REDIRECT_URL = reverse_lazy('path_inicio')
 LOGOUT_REDIRECT_URL = reverse_lazy('path_inicio')
 LOGIN_URL = reverse_lazy('usuarios:path_login')
 
-CSRF_USE_SESSIONS = True
 
 INSTALLED_APPS = [
     'django.contrib.admin',
