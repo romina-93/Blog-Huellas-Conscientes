@@ -90,10 +90,20 @@ USE_TZ = True
 # ARCHIVOS ESTÁTICOS Y MEDIA
 # -----------------------
 
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'static'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+# -----------------------
+# ARCHIVOS ESTÁTICOS
+# -----------------------
+
+STATIC_URL = "/static/"
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static"   # acá están tus css/img/js
+]
+
+STATIC_ROOT = BASE_DIR / "staticfiles"  # 👈 carpeta de salida (NO existe en git)
+
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
